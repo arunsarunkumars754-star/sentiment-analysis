@@ -11,9 +11,15 @@ from nltk.stem import WordNetLemmatizer
 # NLTK
 # -----------------------------------
 
-nltk.download("stopwords")
-nltk.download("wordnet")
-nltk.download("omw-1.4")
+@st.cache_resource
+def load_nlp_resources():
+    nltk.download("stopwords", quiet=True)
+    nltk.download("wordnet", quiet=True)
+    nltk.download("omw-1.4", quiet=True)
+    return set(stopwords.words("english")), WordNetLemmatizer()
+
+
+stop_words, lemmatizer = load_nlp_resources()
 
 
 # -----------------------------------
@@ -26,14 +32,16 @@ with open("sentiment_model.pkl", "rb") as f:
 with open("bow_vectorizer.pkl", "rb") as f:
     bow = pickle.load(f)
 
+SENTIMENT_LABELS = {
+    0: "Negative",
+    1: "Positive",
+    2: "Neutral",
+}
+
 
 # -----------------------------------
 # NLP Preprocessing
 # -----------------------------------
-
-stop_words = set(stopwords.words("english"))
-lemmatizer = WordNetLemmatizer()
-
 
 def preprocess_text(text):
 
@@ -80,23 +88,12 @@ def predict_sentiment(review):
     # BoW transformation
     vector = bow.transform([cleaned_text])
 
-    # Prediction
-    prediction = model.predict(vector)[0]
+    prediction = int(model.predict(vector)[0])
+    probabilities = model.predict_proba(vector)[0]
+    class_index = list(model.classes_).index(prediction)
+    confidence = float(probabilities[class_index])
 
-    # Probability
-    probability = model.predict_proba(vector)[0]
-
-    if prediction == 1:
-
-        sentiment = "Positive 😊"
-        confidence = probability[1]
-
-    else:
-
-        sentiment = "Negative 😞"
-        confidence = probability[0]
-
-    return sentiment, confidence, cleaned_text
+    return SENTIMENT_LABELS[prediction], confidence, cleaned_text
 
 
 # -----------------------------------
@@ -116,10 +113,7 @@ st.set_page_config(
 
 st.title("😊 AI Sentiment Analyzer")
 
-st.write(
-    "NLP + Machine Learning based sentiment "
-    "classification using Bag of Words."
-)
+st.write("Classify a review as positive, neutral, or negative.")
 
 
 # -----------------------------------
@@ -160,14 +154,14 @@ if submitted:
 
         st.subheader("Prediction")
 
-        if "Positive" in sentiment:
+        if sentiment == "Positive":
             st.success(sentiment)
 
-        elif "Negative" in sentiment:
+        elif sentiment == "Negative":
             st.error(sentiment)
 
         else:
-            st.warning(sentiment)
+            st.info(sentiment)
 
         st.subheader("Confidence")
 
@@ -177,32 +171,6 @@ if submitted:
             f"{confidence * 100:.2f}%"
         )
 
-        st.subheader("Preprocessed Text")
-
-        st.info(cleaned_text)
-        # Prediction
-        st.subheader("Prediction")
-
-        if "Positive" in sentiment:
-
-            st.success(sentiment)
-
-        else:
-
-            st.error(sentiment)
-
-
-        # Confidence
-        st.subheader("Confidence")
-
-        st.progress(float(confidence))
-
-        st.write(
-            f"{confidence * 100:.2f}%"
-        )
-
-
-        # Preprocessed text
         st.subheader("Preprocessed Text")
 
         st.info(cleaned_text)
