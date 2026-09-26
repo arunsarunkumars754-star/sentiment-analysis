@@ -1,0 +1,46 @@
+review,sentiment
+"This movie was absolutely amazing!",positive
+"I loved the acting and story.",positive
+"The movie was boring and too long.",negative
+"Terrible acting and weak story.",negative
+"The movie was okay, nothing special.",neutral
+"The product quality is excellent.",positive
+"I really like this phone.",positive
+"The battery is terrible.",negative
+"This product stopped working.",negative
+"The product is average.",neutral
+"The food was delicious.",positive
+"Excellent service and tasty food.",positive
+"The food was cold.",negative
+"Very poor service.",negative
+"The restaurant was okay.",neutral
+"The hotel room was beautiful.",positive
+"Great hotel and friendly staff.",positive
+"The room was dirty.",negative
+"Very disappointing hotel.",negative
+"The hotel was average.",neutral
+"The flight was comfortable.",positive
+"Excellent airline service.",positive
+"The flight was delayed for hours.",negative
+"Terrible customer service.",negative
+"The flight was normal.",neutral
+"This app is very useful.",positive
+"I love this application.",positive
+"The app keeps crashing.",negative
+"Terrible application.",negative
+"The app is okay.",neutral
+"The company reported record profits.",positive
+"The stock increased after strong results.",positive
+"The company reported huge losses.",negative
+"Stock prices fell sharply.",negative
+"The financial results were average.",neutral
+"Thank you for solving my problem.",positive
+"Your support was very helpful.",positive
+"My issue is still not fixed.",negative
+"Very poor customer service.",negative
+"The support was okay.",neutral
+"I got my dream job!",positive
+"This update is amazing.",positive
+"I hate this new update.",negative
+"This is the worst update ever.",negative
+"The update is okay.",neutral
